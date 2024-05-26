@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/crowdsale/distribution/RefundableCrowdsale.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-contract MyCrowdsale is Crowdsale, CappedCrowdsale, TimedCrowdsale, FinalizableCrowdsale, PostDeliveryCrowdsale, RefundableCrowdsale {
+contract TusdCrowdsale is Crowdsale, CappedCrowdsale, TimedCrowdsale, FinalizableCrowdsale, PostDeliveryCrowdsale, RefundableCrowdsale {
     using SafeMath for uint256;
 
     IERC20 public stablecoin;
@@ -33,8 +33,8 @@ contract MyCrowdsale is Crowdsale, CappedCrowdsale, TimedCrowdsale, FinalizableC
         TimedCrowdsale(openingTime, closingTime)
         FinalizableCrowdsale()
         PostDeliveryCrowdsale()
-        RefundableCrowdsale(goal)
-        Crowdsale(rate, wallet, token)
+        RefundableCrowdsale(goal, wallet)
+        Crowdsale(rate, wallet, token, minContribution, maxContribution)
         public
     {
         stablecoin = IERC20(TUSD_ADDRESS);
@@ -42,13 +42,14 @@ contract MyCrowdsale is Crowdsale, CappedCrowdsale, TimedCrowdsale, FinalizableC
         _maxContribution = maxContribution;
     }
 
-    function minContribution() public view returns (uint256) {
-        return _minContribution;
+    function goalReached() public view returns (bool) {
+        return weiRaised() >= goal();
     }
 
-    function maxContribution() public view returns (uint256) {
-        return _maxContribution;
+    function _calculateTokens(uint256 weiAmount) internal view returns (uint256) {
+        return weiAmount.mul(rate());
     }
+
 
     function _preValidatePurchase(address beneficiary, uint256 weiAmount) internal view {
         super._preValidatePurchase(beneficiary, weiAmount);
