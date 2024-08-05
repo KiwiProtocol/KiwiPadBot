@@ -7,7 +7,7 @@ module.exports = {
   networks: {
     opbnb: {
       url: "https://opbnb-mainnet-rpc.bnbchain.org/",
-      chainId: 5611, // Replace with the correct chainId for the "opbnb" network
+      chainId: 204, // Replace with the correct chainId for the "opbnb" network
       accounts: ["{{YOUR-PRIVATE-KEY}}"], // Add private keys or mnemonics of accounts to use
       gasPrice: 20000000000,
     },
@@ -20,7 +20,7 @@ module.exports = {
     customChains: [
       {
         network: "opbnb",
-        chainId: 5611, // Replace with the correct chainId for the "opbnb" network
+        chainId: 204, // Replace with the correct chainId for the "opbnb" network
         urls: {
           apiURL:
             "https://open-platform.nodereal.io/{{YOUR-NODEREAL-API-KEY}}/op-bnb-mainnet/contract/",
